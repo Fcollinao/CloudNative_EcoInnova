@@ -1,0 +1,23 @@
+<div style="padding: 20px; font-family: sans-serif;">
+  <h1>Eco-Innova Platform</h1>
+
+  <div *ngIf="!usuario">
+    <button (click)="login()" style="padding: 10px 20px; cursor: pointer;">
+      Iniciar Sesión con Microsoft
+    </button>
+  </div>
+
+  <div *ngIf="usuario">
+    <p>Bienvenido, <strong>{{ usuario }}</strong>!</p>
+    <button (click)="probarBackend()" style="padding: 10px 20px; margin-right: 10px; cursor: pointer;">
+      Probar Conexión Backend (Spring Boot)
+    </button>
+    <button (click)="logout()" style="padding: 10px 20px; cursor: pointer;">
+      Cerrar Sesión
+    </button>
+
+    <div *ngIf="mensajeBackend" style="margin-top: 15px; background: #eef; padding: 10px; border-radius: 5px;">
+      <strong>Respuesta del Backend:</strong> {{ mensajeBackend }}
+    </div>
+  </div>
+</div>

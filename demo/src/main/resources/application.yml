@@ -1,0 +1,28 @@
+server:
+  port: 5000
+
+spring:
+  # Configuración Base de Datos Supabase (AWS us-east-1)
+  datasource:
+    url: jdbc:postgresql://db.zgxkhkrhitieuyqxjddc.supabase.co:5432/postgres
+    username: postgres
+    password: ecoinnova26
+    driver-class-name: org.postgresql.Driver
+
+  # Configuración JPA / Hibernate
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # Configuración de Seguridad Microsoft Entra ID
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.microsoftonline.com/1d07937f-fb61-42b5-b010-f7e44723ec84/v2.0
+          jwk-set-uri: https://login.microsoftonline.com/1d07937f-fb61-42b5-b010-f7e44723ec84/discovery/v2.0/keys
+          
