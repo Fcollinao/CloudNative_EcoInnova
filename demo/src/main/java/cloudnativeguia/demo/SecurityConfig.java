@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -16,19 +17,20 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    // Bypass total del filtro de Spring Security para el endpoint de administración
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/api/admin/**");
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                // Ruta PÚBLICA permitida para todos
                 .requestMatchers("/api/public/**").permitAll()
-                
-                // Ruta PROTEGIDA exige rol/scope específico (Scope registrado en Azure Entra ID)
                 .requestMatchers("/api/pymes").hasAuthority("SCOPE_Pymes.Read")
-                
-                // El resto de la API requiere autenticación
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));

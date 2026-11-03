@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  rabbitmq-node1:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq-node1
+    hostname: rabbitmq-node1
+    environment:
+      RABBITMQ_ERLANG_COOKIE: 'ECOINNOVA_SECRET_COOKIE_2026'
+      RABBITMQ_DEFAULT_USER: 'guest'
+      RABBITMQ_DEFAULT_PASS: 'guest'
+    ports:
+      - "5672:5672"    # Puerto AMQP para la aplicación Spring Boot
+      - "15672:15672"  # Consola de Administración Nodo 1
+    networks:
+      - ecoinnova-network
+
+  rabbitmq-node2:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq-node2
+    hostname: rabbitmq-node2
+    environment:
+      RABBITMQ_ERLANG_COOKIE: 'ECOINNOVA_SECRET_COOKIE_2026'
+    depends_on:
+      - rabbitmq-node1
+    ports:
+      - "15673:15672"  # Consola de Administración Nodo 2
+    networks:
+      - ecoinnova-network
+
+networks:
+  ecoinnova-network:
+    driver: bridge
+    
